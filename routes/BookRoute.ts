@@ -17,5 +17,17 @@ router.post('/add', (req, res) => {
         });
     }
 });
+router.get('/all', (req, res) => {
+    try {
+        res.status(200).json({
+            message: "book get successfully",
+        });
+    }catch (e) {
+        console.log('error get book : ',e)
+        res.status(400).json({
+            message: "error get book",
+        });
+    }
+});
 
 export default router
