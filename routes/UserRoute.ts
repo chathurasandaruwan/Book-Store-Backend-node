@@ -1,6 +1,6 @@
 import express from "express";
 import {User} from "../interface/User";
-import {userAdd, userDelete, userExist, userGetAll, userUpdate} from "../controller/UserController";
+import {userAdd, userDelete, userExist, userGetAll, userIdExist, userUpdate} from "../controller/UserController";
 
 const router = express.Router();
 
@@ -10,7 +10,7 @@ router.post('/add', async (req, res) => {
         // check exists
         const exists = await userExist(user.email);
         if(exists){
-            res.status(400).send("User already exists !!!");
+            res.status(400).send("User email already exists !!!");
             return;
         }
         // add
@@ -41,22 +41,22 @@ router.get('/all', async (req, res) => {
         });
     }
 })
-router.put('/update/:email', async (req, res) => {
+router.put('/update/:id', async (req, res) => {
     const user: User = req.body
-    const email = req.params.email
+    const id = req.params.id
     try {
         //check exists
-        const exists = await userExist(email);
+        const exists = await userIdExist(id);
         if(!exists){
             res.status(400).send("User doesn't exists !!!");
             return;
         }
         // update
-        const newUser = await userUpdate(user,email);
+        const newUser = await userUpdate(user,id);
         res.status(200).json({
             message: "user update successfully",
             user: newUser,
-            email: email
+            email: id
         });
     } catch (e) {
         console.log('error update user : ', e)
@@ -65,20 +65,20 @@ router.put('/update/:email', async (req, res) => {
         });
     }
 })
-router.delete('/delete/:email', async (req, res) => {
-    const email = req.params.email
+router.delete('/delete/:id', async (req, res) => {
+    const id = req.params.id
     try {
         // check exists
-        const exists = await userExist(email);
+        const exists = await userIdExist(id);
         if(!exists){
             res.status(400).send("User doesn't exists !!!");
             return;
         }
         // delete
-        const deleteUser = await userDelete(email);
+        const deleteUser = await userDelete(id);
         res.status(200).json({
             message: "user delete successfully",
-            email: email,
+            email: id,
             deleteUser:deleteUser
         });
     } catch (e) {

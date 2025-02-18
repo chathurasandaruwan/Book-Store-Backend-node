@@ -25,13 +25,14 @@ export async function userAdd(userData: User){
 }
 // update user
 
-export async function userUpdate(userData: User,email:string){
+export async function userUpdate(userData: User,id:string){
     try{
         const updateUser  = await prisma.user.update({
             where:{
-                email:email
+                id:id
             },
             data:{
+                email:userData.email,
                 password:userData.password,
                 role:userData.role,
                 status:userData.status
@@ -69,12 +70,26 @@ export async function userGetAll(){
         console.log("error get User", err);
     }
 }
-//check user exist
+//check user email exist
 export async function userExist(email:string){
     try{
         const getUser  = await prisma.user.findUnique({
             where:{
                 email:email
+            }
+        })
+        console.log('User get :',getUser)
+        return !!getUser;
+    }catch(err) {
+        console.log("error get User", err);
+    }
+}
+//check user id exist
+export async function userIdExist(id:string){
+    try{
+        const getUser  = await prisma.user.findUnique({
+            where:{
+                id:id
             }
         })
         console.log('User get :',getUser)
