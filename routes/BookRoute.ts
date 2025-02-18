@@ -1,17 +1,19 @@
 import express from "express";
 import {Book} from "../interface/Book";
+import {bookAdd} from "../controller/BookController";
 
 const router = express.Router();
 
-router.post('/add', (req, res) => {
-    const book:Book = req.body;
+router.post('/add', async (req, res) => {
+    const book: Book = req.body;
     try {
+        const newBook = await bookAdd(book);
         res.status(201).json({
             message: "book added successfully",
-            book: book,
+            book: newBook,
         });
-    }catch (e) {
-        console.log('error adding book : ',e)
+    } catch (e) {
+        console.log('error adding book : ', e)
         res.status(400).json({
             message: "error adding book",
         });
