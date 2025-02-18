@@ -23,3 +23,26 @@ export async function bookAdd(bookData: Book){
         console.log("error adding customer", err);
     }
 }
+// update book
+
+export async function bookUpdate(bookData: Book,title:string){
+    try{
+        const updateCustomer  = await prisma.book.update({
+            where:{
+                title:title
+            },
+            data:{
+                author:bookData.author,
+                price:bookData.price,
+                description:bookData.description,
+                category:bookData.category,
+                image:bookData.image,
+                stock:bookData.stock
+            }
+        })
+        console.log('Customer Updated :',updateCustomer)
+        return updateCustomer;
+    }catch(err) {
+        console.log("error updating customer", err);
+    }
+}
