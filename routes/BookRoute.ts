@@ -47,4 +47,19 @@ router.put('/update/:name', (req, res) => {
     }
 });
 
+router.delete('/delete/:name', (req, res) => {
+    const name = req.params.name
+    try {
+        res.status(200).json({
+            message: "book delete successfully",
+            name: name
+        });
+    }catch (e) {
+        console.log('error delete book : ',e)
+        res.status(400).json({
+            message: "error delete book",
+        });
+    }
+});
+
 export default router
