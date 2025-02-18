@@ -27,13 +27,14 @@ export async function bookAdd(bookData: Book){
 }
 // update book
 
-export async function bookUpdate(bookData: Book,title:string){
+export async function bookUpdate(bookData: Book,id:string){
     try{
         const updateBook  = await prisma.book.update({
             where:{
-                title:title
+                id:id
             },
             data:{
+                title:bookData.title,
                 author:bookData.author,
                 price:bookData.price,
                 description:bookData.description,
@@ -50,11 +51,11 @@ export async function bookUpdate(bookData: Book,title:string){
 }
 
 // delete book
-export async function bookDelete(title:string){
+export async function bookDelete(id:string){
     try{
         const deleteBook  = await prisma.book.delete({
             where:{
-                title:title
+                id:id
             }
         })
         console.log('Book Deleted :',deleteBook)
@@ -74,12 +75,26 @@ export async function bookGetAll(){
         console.log("error get Book", err);
     }
 }
-//check book exist
+//check book title exist
 export async function bookExist(title:string){
     try{
         const getBook  = await prisma.book.findUnique({
             where:{
                 title:title
+            }
+        })
+        console.log('Book get :',getBook)
+        return !!getBook;
+    }catch(err) {
+        console.log("error get Book", err);
+    }
+}
+//check book id exist
+export async function bookIdExist(id:string){
+    try{
+        const getBook  = await prisma.book.findUnique({
+            where:{
+                id:id
             }
         })
         console.log('Book get :',getBook)

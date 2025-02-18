@@ -46,11 +46,11 @@ export async function userUpdate(userData: User,id:string){
 }
 
 // delete user
-export async function userDelete(email:string){
+export async function userDelete(id:string){
     try{
         const deleteUser  = await prisma.user.delete({
             where:{
-                email:email
+                id:id
             }
         });
         console.log('User Deleted :',deleteUser)

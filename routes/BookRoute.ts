@@ -1,6 +1,6 @@
 import express from "express";
 import {Book} from "../interface/Book";
-import {bookAdd, bookDelete, bookExist, bookGetAll, bookUpdate} from "../controller/BookController";
+import {bookAdd, bookDelete, bookExist, bookGetAll, bookIdExist, bookUpdate} from "../controller/BookController";
 
 const router = express.Router();
 
@@ -10,7 +10,7 @@ router.post('/add', async (req, res) => {
         // check exists
         const exists = await bookExist(book.title);
         if(exists){
-            res.status(400).send("Book already exists !!!");
+            res.status(400).send("Book title already exists !!!");
             return;
         }
         // add
@@ -42,22 +42,22 @@ router.get('/all', async (req, res) => {
     }
 });
 
-router.put('/update/:title', async (req, res) => {
+router.put('/update/:id', async (req, res) => {
     const book: Book = req.body;
-    const title = req.params.title
+    const id = req.params.id
     try {
         // check exists
-        const exists = await bookExist(title);
+        const exists = await bookIdExist(id);
         if(!exists){
             res.status(400).send("Book doesn't exists !!!");
             return;
         }
         // update
-        const updateBook = await bookUpdate(book,title);
+        const updateBook = await bookUpdate(book,id);
         res.status(200).json({
             message: "book update successfully",
             book: updateBook,
-            title: title
+            title: id
         });
     } catch (e) {
         console.log('error update book : ', e)
@@ -67,17 +67,17 @@ router.put('/update/:title', async (req, res) => {
     }
 });
 
-router.delete('/delete/:name', async (req, res) => {
-    const name = req.params.name
+router.delete('/delete/:id', async (req, res) => {
+    const id = req.params.id
     try {
         // check exists
-        const exists = await bookExist(name);
+        const exists = await bookIdExist(id);
         if(!exists){
             res.status(400).send("Book doesn't exists !!!");
             return;
         }
         // delete
-        const deleteBook = await bookDelete(name);
+        const deleteBook = await bookDelete(id);
         res.status(200).json({
             message: "book delete successfully",
             deletedBook: deleteBook
