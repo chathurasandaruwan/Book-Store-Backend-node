@@ -8,7 +8,7 @@ router.post('/add', (req, res) => {
     try {
         res.status(201).json({
             message: "book added successfully",
-            crop: book,
+            book: book,
         });
     }catch (e) {
         console.log('error adding book : ',e)
@@ -26,6 +26,23 @@ router.get('/all', (req, res) => {
         console.log('error get book : ',e)
         res.status(400).json({
             message: "error get book",
+        });
+    }
+});
+
+router.put('/update/:name', (req, res) => {
+    const book:Book = req.body;
+    const name = req.params.name
+    try {
+        res.status(200).json({
+            message: "book update successfully",
+            book: book,
+            name: name
+        });
+    }catch (e) {
+        console.log('error update book : ',e)
+        res.status(400).json({
+            message: "error update book",
         });
     }
 });
