@@ -6,7 +6,7 @@ const prisma = new PrismaClient();
 // save book
 export async function bookAdd(bookData: Book){
     try{
-        const newCustomer  = await prisma.book.create({
+        const newBook  = await prisma.book.create({
             data:{
                 title:bookData.title,
                 author:bookData.author,
@@ -17,17 +17,17 @@ export async function bookAdd(bookData: Book){
                 stock:bookData.stock
             }
         })
-        console.log('Customer Added :',newCustomer)
-        return newCustomer;
+        console.log('Book Added :',newBook)
+        return newBook;
     }catch(err) {
-        console.log("error adding customer", err);
+        console.log("error adding Book", err);
     }
 }
 // update book
 
 export async function bookUpdate(bookData: Book,title:string){
     try{
-        const updateCustomer  = await prisma.book.update({
+        const updateBook  = await prisma.book.update({
             where:{
                 title:title
             },
@@ -40,49 +40,49 @@ export async function bookUpdate(bookData: Book,title:string){
                 stock:bookData.stock
             }
         })
-        console.log('Customer Updated :',updateCustomer)
-        return updateCustomer;
+        console.log('Book Updated :',updateBook)
+        return updateBook;
     }catch(err) {
-        console.log("error updating customer", err);
+        console.log("error updating Book", err);
     }
 }
 
 // delete book
 export async function bookDelete(title:string){
     try{
-        const deleteCustomer  = await prisma.book.delete({
+        const deleteBook  = await prisma.book.delete({
             where:{
                 title:title
             }
         })
-        console.log('Customer Deleted :',deleteCustomer)
-        return deleteCustomer;
+        console.log('Book Deleted :',deleteBook)
+        return deleteBook;
     }catch(err) {
-        console.log("error deleting customer", err);
+        console.log("error deleting Book", err);
     }
 }
 
 //get All books
 export async function bookGetAll(){
     try{
-        const getCustomer  = await prisma.book.findMany()
-        console.log('Customer get :',getCustomer)
-        return getCustomer;
+        const getBook  = await prisma.book.findMany()
+        console.log('Book get :',getBook)
+        return getBook;
     }catch(err) {
-        console.log("error get customer", err);
+        console.log("error get Book", err);
     }
 }
 //check book exist
 export async function bookExist(title:string){
     try{
-        const getCustomer  = await prisma.book.findUnique({
+        const getBook  = await prisma.book.findUnique({
             where:{
                 title:title
             }
         })
-        console.log('Customer get :',getCustomer)
-        return !!getCustomer;
+        console.log('Book get :',getBook)
+        return !!getBook;
     }catch(err) {
-        console.log("error get customer", err);
+        console.log("error get Book", err);
     }
 }
