@@ -46,9 +46,14 @@ router.put('/update/:id', async (req, res) => {
     const id = req.params.id
     try {
         //check exists
-        const exists = await userIdExist(id);
-        if(!exists){
+        const existsId = await userIdExist(id);
+        const existsEmail = await userExist(user.email);
+        if(!existsId){
             res.status(400).send("User doesn't exists !!!");
+            return;
+        }
+        if(existsEmail){
+            res.status(400).send("User email already exists !!!");
             return;
         }
         // update
