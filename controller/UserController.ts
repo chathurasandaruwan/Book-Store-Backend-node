@@ -7,8 +7,10 @@ const prisma = new PrismaClient();
 // save user
 export async function userAdd(userData: User){
     try{
+        const id = await generateUserId();
         const newUser  = await prisma.user.create({
             data:{
+                id:id,
                 email:userData.email,
                 password:userData.password,
                 role:userData.role,
@@ -21,7 +23,7 @@ export async function userAdd(userData: User){
         console.log("error adding User", err);
     }
 }
-// update book
+// update user
 
 export async function userUpdate(userData: User,email:string){
     try{
@@ -42,7 +44,7 @@ export async function userUpdate(userData: User,email:string){
     }
 }
 
-// delete book
+// delete user
 export async function userDelete(email:string){
     try{
         const deleteUser  = await prisma.user.delete({
@@ -57,7 +59,7 @@ export async function userDelete(email:string){
     }
 }
 
-//get All books
+//get All users
 export async function userGetAll(){
     try{
         const getUser  = await prisma.user.findMany()
@@ -67,7 +69,7 @@ export async function userGetAll(){
         console.log("error get User", err);
     }
 }
-//check book exist
+//check user exist
 export async function userExist(email:string){
     try{
         const getUser  = await prisma.user.findUnique({
@@ -77,6 +79,34 @@ export async function userExist(email:string){
         })
         console.log('User get :',getUser)
         return !!getUser;
+    }catch(err) {
+        console.log("error get User", err);
+    }
+}
+//find last user
+export async function userLast(){
+    try{
+        const lastUser = await prisma.user.findFirst({
+            orderBy: { id: 'desc' },
+        });
+        console.log('User get :',lastUser)
+        return lastUser;
+    }catch(err) {
+        console.log("error get User", err);
+    }
+}
+//generate user id
+export async function generateUserId(){
+    try{
+        const lastUser = await userLast();
+        let newId = "U00-001"; // Default for first record
+
+        if (lastUser) {
+            const lastNumber = parseInt(lastUser.id.split("-")[1], 10);
+            newId = `U00-${String(lastNumber + 1).padStart(3, "0")}`;
+        }
+
+        return newId;
     }catch(err) {
         console.log("error get User", err);
     }
