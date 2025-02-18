@@ -72,3 +72,17 @@ export async function bookGetAll(){
         console.log("error get customer", err);
     }
 }
+//check book exist
+export async function bookExist(title:string){
+    try{
+        const getCustomer  = await prisma.book.findUnique({
+            where:{
+                title:title
+            }
+        })
+        console.log('Customer get :',getCustomer)
+        return !!getCustomer;
+    }catch(err) {
+        console.log("error get customer", err);
+    }
+}
