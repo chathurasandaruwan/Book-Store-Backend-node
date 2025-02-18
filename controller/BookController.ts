@@ -6,8 +6,10 @@ const prisma = new PrismaClient();
 // save book
 export async function bookAdd(bookData: Book){
     try{
+        const id = await generateBookId();
         const newBook  = await prisma.book.create({
             data:{
+                id:id,
                 title:bookData.title,
                 author:bookData.author,
                 price:bookData.price,
@@ -84,5 +86,33 @@ export async function bookExist(title:string){
         return !!getBook;
     }catch(err) {
         console.log("error get Book", err);
+    }
+}
+//find last book
+export async function bookLastId(){
+    try{
+        const lastBook = await prisma.book.findFirst({
+            orderBy: { id: 'desc' },
+        });
+        console.log('Book get :',lastBook)
+        return lastBook;
+    }catch(err) {
+        console.log("error get Book", err);
+    }
+}
+// generate Id
+async function generateBookId() {
+    try {
+        const lastBook = await bookLastId();
+        let newId = "B00-001"; // Default ID for the first record
+
+        if (lastBook) {
+            const lastNumber = parseInt(lastBook.id.split("-")[1], 10);
+            newId = `B00-${String(lastNumber + 1).padStart(3, "0")}`;
+        }
+
+        return newId;
+    } catch (e) {
+
     }
 }
