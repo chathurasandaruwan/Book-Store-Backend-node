@@ -1,6 +1,6 @@
 import express from "express";
 import {Book} from "../interface/Book";
-import {bookAdd, bookDelete, bookUpdate} from "../controller/BookController";
+import {bookAdd, bookDelete, bookGetAll, bookUpdate} from "../controller/BookController";
 
 const router = express.Router();
 
@@ -19,13 +19,15 @@ router.post('/add', async (req, res) => {
         });
     }
 });
-router.get('/all', (req, res) => {
+router.get('/all', async (req, res) => {
     try {
+        const getAllBook = await bookGetAll();
         res.status(200).json({
             message: "book get successfully",
+            books: getAllBook
         });
-    }catch (e) {
-        console.log('error get book : ',e)
+    } catch (e) {
+        console.log('error get book : ', e)
         res.status(400).json({
             message: "error get book",
         });

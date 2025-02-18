@@ -61,3 +61,14 @@ export async function bookDelete(title:string){
         console.log("error deleting customer", err);
     }
 }
+
+//get All books
+export async function bookGetAll(){
+    try{
+        const getCustomer  = await prisma.book.findMany()
+        console.log('Customer get :',getCustomer)
+        return getCustomer;
+    }catch(err) {
+        console.log("error get customer", err);
+    }
+}
