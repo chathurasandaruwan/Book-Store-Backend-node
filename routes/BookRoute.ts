@@ -1,6 +1,6 @@
 import express from "express";
 import {Book} from "../interface/Book";
-import {bookAdd, bookUpdate} from "../controller/BookController";
+import {bookAdd, bookDelete, bookUpdate} from "../controller/BookController";
 
 const router = express.Router();
 
@@ -50,15 +50,16 @@ router.put('/update/:title', async (req, res) => {
     }
 });
 
-router.delete('/delete/:name', (req, res) => {
+router.delete('/delete/:name', async (req, res) => {
     const name = req.params.name
     try {
+        const deleteBook = await bookDelete(name);
         res.status(200).json({
             message: "book delete successfully",
-            name: name
+            deletedBook: deleteBook
         });
-    }catch (e) {
-        console.log('error delete book : ',e)
+    } catch (e) {
+        console.log('error delete book : ', e)
         res.status(400).json({
             message: "error delete book",
         });

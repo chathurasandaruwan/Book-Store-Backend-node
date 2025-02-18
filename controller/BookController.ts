@@ -46,3 +46,18 @@ export async function bookUpdate(bookData: Book,title:string){
         console.log("error updating customer", err);
     }
 }
+
+// delete book
+export async function bookDelete(title:string){
+    try{
+        const deleteCustomer  = await prisma.book.delete({
+            where:{
+                title:title
+            }
+        })
+        console.log('Customer Deleted :',deleteCustomer)
+        return deleteCustomer;
+    }catch(err) {
+        console.log("error deleting customer", err);
+    }
+}
