@@ -15,10 +15,7 @@ router.post('/add', async (req, res) => {
         }
         // add
         const newBook = await bookAdd(book);
-        res.status(201).json({
-            message: "book added successfully",
-            book: newBook,
-        });
+        res.json(newBook);
     } catch (e) {
         console.log('error adding book : ', e)
         res.status(400).json({
@@ -30,10 +27,7 @@ router.get('/all', async (req, res) => {
     try {
         // get
         const getAllBook = await bookGetAll();
-        res.status(200).json({
-            message: "book get successfully",
-            books: getAllBook
-        });
+        res.json(getAllBook);
     } catch (e) {
         console.log('error get book : ', e)
         res.status(400).json({
@@ -59,11 +53,7 @@ router.put('/update/:id', async (req, res) => {
         }
         // update
         const updateBook = await bookUpdate(book,id);
-        res.status(200).json({
-            message: "book update successfully",
-            book: updateBook,
-            title: id
-        });
+        res.json(updateBook);
     } catch (e) {
         console.log('error update book : ', e)
         res.status(400).json({
@@ -83,10 +73,7 @@ router.delete('/delete/:id', async (req, res) => {
         }
         // delete
         const deleteBook = await bookDelete(id);
-        res.status(200).json({
-            message: "book delete successfully",
-            deletedBook: deleteBook
-        });
+        res.json(deleteBook);
     } catch (e) {
         console.log('error delete book : ', e)
         res.status(400).json({
