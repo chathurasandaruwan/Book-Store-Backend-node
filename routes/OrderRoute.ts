@@ -39,11 +39,11 @@ router.get('/all', async (req, res) => {
 })
 
 router.put('/update/:id', async (req, res) => {
-    const order: Order = req.body
+    const { status } = req.body;
     const id = req.params.id
     try {
         // update
-        const updateOrder = await orderUpdate(order,id);
+        const updateOrder = await orderUpdate(status,id);
         res.status(200).json({
             message: "order update successfully",
             order: updateOrder,

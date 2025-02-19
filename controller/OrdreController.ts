@@ -41,7 +41,7 @@ export async function orderAdd(orderData: Order){
                 },
                 include: { books: { include: { book: true } } },
             });
-            
+
             // Update Book Stock
             for (const book of orderData.books) {
                 await tx.book.update({
@@ -57,21 +57,19 @@ export async function orderAdd(orderData: Order){
         console.log("error adding Order", err);
     }
 }
-//update order
-export async function orderUpdate(orderData: Order,id:string){
+//update order status
+export async function orderUpdate(status: string,id:string){
     try{
-        /*const updateOrder  = await prisma.order.update({
+        const updateOrder  = await prisma.order.update({
             where:{
                 id:id
             },
             data:{
-                userId:orderData.userId,
-                status:orderData.status,
-                books:orderData.books
+                status:status,
             }
         })
         console.log('Order Updated :',updateOrder)
-        return updateOrder;*/
+        return updateOrder;
     }catch(err) {
         console.log("error update Order",err)
     }
