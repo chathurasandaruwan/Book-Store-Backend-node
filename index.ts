@@ -8,8 +8,9 @@ dotenv.config();
 const port = process.env.PORT || 3000
 const app = express()
 
-app.use(express.json())
-
+// app.use(express.json())
+app.use(express.json({ limit: "50mb" })); // Increase limit to 50MB
+app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use('/',(req,res,next)=>{
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
