@@ -10,10 +10,7 @@ router.post('/add', async (req, res) => {
     try {
         // add
         const newOrder = await orderAdd(order);
-        res.status(201).json({
-            message: "order added successfully",
-            order: newOrder,
-        });
+        res.json(newOrder);
     } catch (e) {
         console.log('error adding order : ', e)
         res.status(400).json({
@@ -26,10 +23,7 @@ router.get('/all', async (req, res) => {
     try {
         // get
         const getAllOrder = await orderGetAll();
-        res.status(200).json({
-            message: "order get successfully",
-            orders: getAllOrder
-        });
+        res.json(getAllOrder);
     } catch (e) {
         console.log('error get order : ', e)
         res.status(400).json({
@@ -43,12 +37,8 @@ router.put('/update/:id', async (req, res) => {
     const id = req.params.id
     try {
         // update
-        const updateOrder = await orderUpdate(status,id);
-        res.status(200).json({
-            message: "order update successfully",
-            order: updateOrder,
-            title: id
-        });
+        const updatedOrder = await orderUpdate(status,id);
+        res.json(updatedOrder);
     } catch (e) {
         console.log('error update order : ', e)
         res.status(400).json({
