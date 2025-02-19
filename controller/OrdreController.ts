@@ -77,7 +77,11 @@ export async function orderUpdate(status: string,id:string){
 //get All
 export async function orderGetAll(){
     try{
-        const getOrders  = await prisma.order.findMany()
+        const getOrders  = await prisma.order.findMany({
+            include: {
+                books: { include: { book: true } },
+            },
+        })
         console.log('Orders get :',getOrders)
         return getOrders;
     }catch(err) {
