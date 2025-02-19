@@ -1,6 +1,5 @@
 export interface OrderDetail {
-    date:Date
-    orderId:string
     bookId:string
+    price:number
     quantity:number
 }

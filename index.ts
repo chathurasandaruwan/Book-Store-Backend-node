@@ -2,6 +2,7 @@ import express from 'express'
 import dotenv from 'dotenv'
 import BookRoute from "./routes/BookRoute";
 import UserRoute from "./routes/UserRoute";
+import OrderRoute from "./routes/OrderRoute";
 
 dotenv.config();
 const port = process.env.PORT || 3000
@@ -17,6 +18,7 @@ app.use('/',(req,res,next)=>{
 });
 app.use('/book',BookRoute);
 app.use('/user',UserRoute);
+app.use('/order',OrderRoute);
 app.listen(port, () => {
     console.log(`Server running on port ${port}`)
 });
