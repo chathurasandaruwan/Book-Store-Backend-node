@@ -15,10 +15,7 @@ router.post('/add', async (req, res) => {
         }
         // add
         const newUser = await userAdd(user);
-        res.status(201).json({
-            message: "user added successfully",
-            user: newUser,
-        });
+        res.json(newUser);
     } catch (e) {
         console.log('error adding user : ', e)
         res.status(400).json({
@@ -30,10 +27,7 @@ router.get('/all', async (req, res) => {
     try {
         // get
         const AllUser = await userGetAll();
-        res.status(201).json({
-            message: "user getting successfully",
-            users: AllUser
-        });
+        res.json(AllUser);
     } catch (e) {
         console.log('error getting user : ', e)
         res.status(400).json({
@@ -57,12 +51,8 @@ router.put('/update/:id', async (req, res) => {
             return;
         }
         // update
-        const newUser = await userUpdate(user,id);
-        res.status(200).json({
-            message: "user update successfully",
-            user: newUser,
-            email: id
-        });
+        const updatedUser = await userUpdate(user,id);
+        res.json(updatedUser);
     } catch (e) {
         console.log('error update user : ', e)
         res.status(400).json({
@@ -80,12 +70,8 @@ router.delete('/delete/:id', async (req, res) => {
             return;
         }
         // delete
-        const deleteUser = await userDelete(id);
-        res.status(200).json({
-            message: "user delete successfully",
-            email: id,
-            deleteUser:deleteUser
-        });
+        const deletedUser = await userDelete(id);
+        res.json(deletedUser);
     } catch (e) {
         console.log('error delete user : ', e)
         res.status(400).json({
