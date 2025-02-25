@@ -5,7 +5,7 @@ import {orderAdd, orderGetAll, orderUpdate} from "../controller/OrdreController"
 
 const router = express.Router();
 //place order
-router.post('/add', async (req, res) => {
+/*router.post('/add', async (req, res) => {
     const order: Order = req.body
     try {
         // add
@@ -17,7 +17,7 @@ router.post('/add', async (req, res) => {
             message: "error adding order",
         });
     }
-});
+});*/
 router.get('/all', async (req, res) => {
 
     try {

@@ -8,22 +8,6 @@ const prisma = new PrismaClient();
 export async function orderAdd(orderData: Order){
     try{
         const id = await generateOrderId();
-        /*const newOrder  = await prisma.order.create({
-            data: {
-                id:id,
-                status: orderData.status,
-                user: { connect: { id: orderData.userId } },
-                books: {
-                    create: orderData.books.map((book) => ({
-                        book: { connect: { id: book.bookId } },
-                        quantity: book.quantity,
-                        price: book.price,
-                    })),
-                },
-            },
-            include: { books: { include: { book: true } } },
-
-        })*/
         const newOrder = await prisma.$transaction(async (tx) => {
             // Create Order
             const order = await tx.order.create({

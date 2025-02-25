@@ -2,6 +2,8 @@ import express from "express";
 import Stripe from "stripe";
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
+import {orderAdd} from "../../controller/OrdreController";
+import {Order} from "../../interface/Order";
 
 dotenv.config();
 
@@ -32,6 +34,23 @@ router.post(
             case "payment_intent.succeeded":
                 const paymentIntent = event.data.object as Stripe.PaymentIntent;
                 console.log("Payment successful:", paymentIntent.id);
+                const newOrder: Order = {
+                    id: paymentIntent.metadata.orderId || "",
+                    userId: paymentIntent.metadata.userId || "",
+                    status: "completed",
+                    books: paymentIntent.metadata.books ? JSON.parse(paymentIntent.metadata.books) : [] // Parse books from metadata if needed
+                };
+
+                try {
+                    // Add order to database
+                    const addedOrder = await orderAdd(newOrder);
+                    res.json(addedOrder);
+                } catch (e) {
+                    console.log("Error adding order:", e);
+                    res.status(400).json({
+                        message: "Error adding order",
+                    });
+                }
                 break;
             case "payment_intent.payment_failed":
                 const failedPaymentIntent = event.data.object as Stripe.PaymentIntent;
