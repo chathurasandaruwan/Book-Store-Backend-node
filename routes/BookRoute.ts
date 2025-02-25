@@ -10,7 +10,7 @@ router.post('/add', async (req, res) => {
         // check exists
         const exists = await bookExist(book.title);
         if(exists){
-            res.status(400).send("Book title already exists !!!");
+            res.status(400).json("Book title already exists !!!");
             return;
         }
         // add
@@ -42,13 +42,8 @@ router.put('/update/:id', async (req, res) => {
     try {
         // check exists
         const existsId = await bookIdExist(id);
-        const existsTitle = await bookExist(book.title);
         if(!existsId){
-            res.status(400).send("Book doesn't exists !!!");
-            return;
-        }
-        if(existsTitle){
-            res.status(400).send("Book title already exists !!!");
+            res.status(400).json("Book doesn't exists !!!");
             return;
         }
         // update

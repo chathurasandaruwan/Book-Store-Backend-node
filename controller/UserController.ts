@@ -11,6 +11,7 @@ export async function userAdd(userData: User){
         const newUser  = await prisma.user.create({
             data:{
                 id:id,
+                name:userData.name,
                 email:userData.email,
                 password:userData.password,
                 role:userData.role,
@@ -32,6 +33,7 @@ export async function userUpdate(userData: User,id:string){
                 id:id
             },
             data:{
+                name:userData.name,
                 email:userData.email,
                 password:userData.password,
                 role:userData.role,
