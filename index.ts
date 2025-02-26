@@ -5,10 +5,16 @@ import UserRoute from "./routes/UserRoute";
 import OrderRoute from "./routes/OrderRoute";
 import PaymentRoute from "./routes/payment/PaymentRoute";
 import WebhookRoute from "./routes/payment/WebhookRoute";
+import bodyParser from "body-parser";
+
 
 dotenv.config();
+
 const port = process.env.PORT || 3000
 const app = express()
+
+app.use("/api/webhooks", bodyParser.raw({ type: "application/json" }), WebhookRoute);
+
 
 // app.use(express.json())
 app.use(express.json({ limit: "50mb" })); // Increase limit to 50MB
@@ -23,7 +29,7 @@ app.use('/book',BookRoute);
 app.use('/user',UserRoute);
 app.use('/order',OrderRoute);
 app.use("/api/payments", PaymentRoute);
-app.use("/api/webhooks", WebhookRoute);
+// app.use("/api/webhooks", WebhookRoute ,bodyParser.raw());
 app.listen(port, () => {
     console.log(`Server running on port ${port}`)
 });

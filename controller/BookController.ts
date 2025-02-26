@@ -69,7 +69,7 @@ export async function bookDelete(id:string){
 export async function bookGetAll(){
     try{
         const getBook  = await prisma.book.findMany()
-        console.log('Book get :',getBook)
+        // console.log('Book get :',getBook)
         return getBook;
     }catch(err) {
         console.log("error get Book", err);
@@ -83,7 +83,7 @@ export async function bookExist(title:string){
                 title:title
             }
         })
-        console.log('Book get :',getBook)
+        // console.log('Book get :',getBook)
         return !!getBook;
     }catch(err) {
         console.log("error get Book", err);
@@ -97,7 +97,7 @@ export async function bookIdExist(id:string){
                 id:id
             }
         })
-        console.log('Book get :',getBook)
+        // console.log('Book get :',getBook)
         return !!getBook;
     }catch(err) {
         console.log("error get Book", err);
@@ -109,7 +109,7 @@ export async function bookLastId(){
         const lastBook = await prisma.book.findFirst({
             orderBy: { id: 'desc' },
         });
-        console.log('Book get :',lastBook)
+        // console.log('Book get :',lastBook)
         return lastBook;
     }catch(err) {
         console.log("error get Book", err);
