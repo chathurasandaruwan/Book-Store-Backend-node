@@ -17,7 +17,7 @@ export async function orderAdd(orderData: Order){
                     user: { connect: { id: orderData.userId } },
                     books: {
                         create: orderData.books.map((book) => ({
-                            book: { connect: { id: book.bookId } },
+                            book: { connect: { id: book.bookId} },
                             quantity: book.quantity,
                             price: book.price,
                         })),
