@@ -5,7 +5,7 @@ import {User} from "../interface/User";
 
 const prisma = new PrismaClient();
 // save user
-export async function userAdd(userData: User){
+/*export async function userAdd(userData: User){
     try{
         const id = await generateUserId();
         const newUser  = await prisma.user.create({
@@ -23,7 +23,7 @@ export async function userAdd(userData: User){
     }catch(err) {
         console.log("error adding User", err);
     }
-}
+}*/
 // update user
 
 export async function userUpdate(userData: User,id:string){
@@ -86,6 +86,7 @@ export async function userExist(email:string){
         console.log("error get User", err);
     }
 }
+/*
 //check user id exist
 export async function userIdExist(id:string){
     try{
@@ -127,4 +128,4 @@ export async function generateUserId(){
     }catch(err) {
         console.log("error get User", err);
     }
-}
+}*/

@@ -2,6 +2,7 @@ import jwt, {Secret} from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import express from "express";
 import {User} from "../interface/User";
+import {signUp, verifyUserCredentials} from "../controller/AuthController";
 
 dotenv.config();
 
@@ -12,7 +13,7 @@ router.post("/login", async (req, res) => {
     const email = req.body.user.email;
     const password = req.body.user.password;
 
-    const user  = {email, password};
+    const user:{email: string, password: string}  = {email, password};
 
     try{
         const isVerified =  await verifyUserCredentials(user);
@@ -36,7 +37,7 @@ router.post("/register", async (req, res) => {
     const user : User = req.body.user;
 
     try{
-        const registration = await createUser(user);
+        const registration = await signUp(user);
         res.status(201).json(registration);
     }catch(err){
         console.log(err);
