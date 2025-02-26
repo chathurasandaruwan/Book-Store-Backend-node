@@ -7,12 +7,10 @@ import PaymentRoute from "./routes/payment/PaymentRoute";
 import WebhookRoute from "./routes/payment/WebhookRoute";
 import bodyParser from "body-parser";
 
-
 dotenv.config();
 
 const port = process.env.PORT || 3000
 const app = express()
-
 app.use("/api/webhooks", bodyParser.raw({ type: "application/json" }), WebhookRoute);
 
 
