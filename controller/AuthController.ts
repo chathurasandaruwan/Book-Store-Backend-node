@@ -17,7 +17,8 @@ export async function signUp(user : User) {
             status: user.status,
         },
     });
-    console.log("User created:", addedUser);
+    console.log('User Added :',addedUser)
+    return addedUser;
 }
 
 export async function verifyUserCredentials(verifyUser: {email: string, password: string}) {

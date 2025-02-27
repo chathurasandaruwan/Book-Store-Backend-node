@@ -34,18 +34,29 @@ router.post("/login", async (req, res) => {
 
 router.post("/register", async (req, res) => {
     console.log('Register', req.body);
-    const user : User = req.body.user;
+    const user : User = req.body;
+    const email = user.email;
 
     try{
         // check exists
-        const exists = await userExist(user.email);
+        const exists = await userExist(email);
         if(exists){
             res.status(400).send("User email already exists !!!");
             return;
         }
         // save auther
         const registration = await signUp(user);
-        res.status(201).json(registration);
+        if (registration === null || registration === undefined) {
+            res.status(400).json({
+                message: "error registering user",
+            });
+            return;
+        }else {
+            const token = jwt.sign({ email }, process.env.SECRET_KEY as Secret, {expiresIn: "10m"});
+            res.json({accessToken : token});
+        }
+
+
     }catch(err){
         console.log(err);
         res.status(401).json(err);
