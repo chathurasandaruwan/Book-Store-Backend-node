@@ -28,7 +28,7 @@ export async function verifyUserCredentials(verifyUser: {email: string, password
     if (!user) {
         return false;
     }
-    if (user.status !== "active") {
+    if (user.status !== "active" ) {
         return false;
     }
 

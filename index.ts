@@ -21,7 +21,7 @@ app.use("/api/webhooks", bodyParser.raw({ type: "application/json" }), WebhookRo
 app.use(express.json({ limit: "50mb" })); // Increase limit to 50MB
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: ["http://localhost:5173","http://localhost:5174"],
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true

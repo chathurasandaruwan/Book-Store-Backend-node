@@ -1,11 +1,14 @@
 // connect with DB
 import {PrismaClient} from "@prisma/client";
 import {User} from "../interface/User";
+import {generateUserId} from "./AuthController";
+import bcrypt from "bcrypt";
 
 
 const prisma = new PrismaClient();
 // save user
-/*export async function userAdd(userData: User){
+export async function userAdd(userData: User){
+    const hashedPassword = await bcrypt.hash(userData.password, 10);
     try{
         const id = await generateUserId();
         const newUser  = await prisma.user.create({
@@ -13,7 +16,7 @@ const prisma = new PrismaClient();
                 id:id,
                 name:userData.name,
                 email:userData.email,
-                password:userData.password,
+                password:hashedPassword,
                 role:userData.role,
                 status:userData.status
             }
@@ -23,7 +26,7 @@ const prisma = new PrismaClient();
     }catch(err) {
         console.log("error adding User", err);
     }
-}*/
+}
 // update user
 
 export async function userUpdate(userData: User,id:string){
@@ -86,33 +89,3 @@ export async function userIdExist(id:string){
         console.log("error get User", err);
     }
 }
-
-/*
-//find last user
-export async function userLast(){
-    try{
-        const lastUser = await prisma.user.findFirst({
-            orderBy: { id: 'desc' },
-        });
-        console.log('User get :',lastUser)
-        return lastUser;
-    }catch(err) {
-        console.log("error get User", err);
-    }
-}
-//generate user id
-export async function generateUserId(){
-    try{
-        const lastUser = await userLast();
-        let newId = "U00-001"; // Default for first record
-
-        if (lastUser) {
-            const lastNumber = parseInt(lastUser.id.split("-")[1], 10);
-            newId = `U00-${String(lastNumber + 1).padStart(3, "0")}`;
-        }
-
-        return newId;
-    }catch(err) {
-        console.log("error get User", err);
-    }
-}*/

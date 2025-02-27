@@ -10,8 +10,8 @@ const router = express.Router();
 
 router.post("/login", async (req, res) => {
     console.log('Login')
-    const email = req.body.email;
-    const password = req.body.password;
+    const email = req.body.user.email;
+    const password = req.body.user.password;
 
     const user:{email: string, password: string}  = {email, password};
 
@@ -33,7 +33,7 @@ router.post("/login", async (req, res) => {
 })
 
 router.post("/register", async (req, res) => {
-    console.log('Register', req.body);
+
     const user : User = req.body.user;
     const email = user.email;
     console.log('register page',user)
