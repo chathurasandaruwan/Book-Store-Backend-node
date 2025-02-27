@@ -26,15 +26,14 @@ app.use('/',(req,res,next)=>{
     next();
 });
 
-console.log("Loaded SECRET_KEY:", process.env.SECRET_KEY);
-
 app.use('/auth', AuthRoute);
+app.use('/book',BookRoute);
 
 app.use(authenticateToken);
 
 
 
-app.use('/book',BookRoute);
+// app.use('/book',BookRoute);
 app.use('/user',UserRoute);
 app.use('/order',OrderRoute);
 app.use("/api/payments", PaymentRoute);

@@ -10,8 +10,8 @@ const router = express.Router();
 
 router.post("/login", async (req, res) => {
     console.log('Login')
-    const email = req.body.user.email;
-    const password = req.body.user.password;
+    const email = req.body.email;
+    const password = req.body.password;
 
     const user:{email: string, password: string}  = {email, password};
 
@@ -19,7 +19,7 @@ router.post("/login", async (req, res) => {
         const isVerified =  await verifyUserCredentials(user);
 
         if(isVerified){
-            const token = jwt.sign({ email }, process.env.SECRET_KEY as Secret, {expiresIn: "10m"});
+            const token = jwt.sign({ email }, process.env.SECRET_KEY as Secret, {expiresIn: "1d"});
             const refreshToken = jwt.sign({ email }, process.env.REFRESH_TOKEN as Secret, {expiresIn: "7d"});
             res.json({accessToken : token, refreshToken : refreshToken});
         }else{
@@ -52,11 +52,10 @@ router.post("/register", async (req, res) => {
             });
             return;
         }else {
-            const token = jwt.sign({ email }, process.env.SECRET_KEY as Secret, {expiresIn: "10m"});
+            // generate token
+            const token = jwt.sign({ email }, process.env.SECRET_KEY as Secret, {expiresIn: "1d"});
             res.json({accessToken : token});
         }
-
-
     }catch(err){
         console.log(err);
         res.status(401).json(err);
@@ -68,11 +67,11 @@ router.post("/refresh-token", async (req, res) => {
     const authHeader = req.headers.authorization;
     const refresh_token = authHeader?.split(' ')[1];
 
-    if(!refresh_token)res.status(401).send('No token provided');
+    if(!refresh_token){res.status(401).json({message : 'No token provided'}); return}
 
     try{
         const payload = jwt.verify(refresh_token as string, process.env.REFRESH_TOKEN as Secret) as {email: string, iat: number};
-        const token = jwt.sign({ email: payload.email }, process.env.SECRET_KEY as Secret, {expiresIn: "1m"});
+        const token = jwt.sign({ email: payload.email }, process.env.SECRET_KEY as Secret, {expiresIn: "1d"});
         res.json({accessToken : token});
     }catch(err){
         console.log(err);
@@ -83,13 +82,10 @@ router.post("/refresh-token", async (req, res) => {
 export function authenticateToken(req : express.Request, res : express.Response, next : express.NextFunction){
     const authHeader = req.headers.authorization;
     const token = authHeader?.split(' ')[1];
-
-    console.log(token);
-    if(!token)res.status(401).send('No token provided');
+    if(!token){res.status(401).json({message : 'No token provided'}); return}
 
     try{
         const payload = jwt.verify(token as string, process.env.SECRET_KEY as Secret) as {email: string, iat: number};
-        console.log(payload.email);
         req.body.email = payload.email;
         next();
     }catch(err){

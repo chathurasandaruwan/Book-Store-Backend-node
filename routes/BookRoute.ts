@@ -1,9 +1,25 @@
 import express from "express";
 import {Book} from "../interface/Book";
 import {bookAdd, bookDelete, bookExist, bookGetAll, bookIdExist, bookUpdate} from "../controller/BookController";
+import {authenticateToken} from "./AuthRoute";
 
 const router = express.Router();
 
+
+router.get('/all', async (req, res) => {
+    try {
+        // get
+        const getAllBook = await bookGetAll();
+        res.json(getAllBook);
+    } catch (e) {
+        console.log('error get book : ', e)
+        res.status(400).json({
+            message: "error get book",
+        });
+    }
+});
+
+router.use(authenticateToken);
 router.post('/add', async (req, res) => {
     const book: Book = req.body;
     try {
@@ -20,18 +36,6 @@ router.post('/add', async (req, res) => {
         console.log('error adding book : ', e)
         res.status(400).json({
             message: "error adding book",
-        });
-    }
-});
-router.get('/all', async (req, res) => {
-    try {
-        // get
-        const getAllBook = await bookGetAll();
-        res.json(getAllBook);
-    } catch (e) {
-        console.log('error get book : ', e)
-        res.status(400).json({
-            message: "error get book",
         });
     }
 });
