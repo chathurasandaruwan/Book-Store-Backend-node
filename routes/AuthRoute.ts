@@ -23,7 +23,8 @@ router.post("/login", async (req, res) => {
             const refreshToken = jwt.sign({ email }, process.env.REFRESH_TOKEN as Secret, {expiresIn: "7d"});
             res.json({accessToken : token, refreshToken : refreshToken,user : userDetail});
         }else{
-            res.sendStatus(403).json({message: 'Invalid credentials or your account is blocked by admin'});
+            res.json({message: 'Invalid credentials or your account is blocked by admin'});
+            return;
         }
     }catch(err){
         console.log(err);
