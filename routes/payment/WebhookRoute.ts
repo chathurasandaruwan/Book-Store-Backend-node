@@ -27,10 +27,9 @@ router.post(
                 case "payment_intent.succeeded":
                     const paymentIntent = event.data.object as Stripe.PaymentIntent;
                     console.log("Payment successful:", paymentIntent.id);
-                    console.log("order data user id is ::::::::::::::::::::::", paymentIntent.metadata.books)
                     const newOrder: Order = {
                         id: paymentIntent.metadata.orderId || "",
-                        status: "completed",
+                        status: "pending",
                         userId: paymentIntent.metadata.userId || "",
                         books: paymentIntent.metadata.books ? JSON.parse(paymentIntent.metadata.books) : [] // Parse books from metadata if needed
                     };
