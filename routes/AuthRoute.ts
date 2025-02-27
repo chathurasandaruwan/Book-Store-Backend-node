@@ -19,7 +19,7 @@ router.post("/login", async (req, res) => {
         const isVerified =  await verifyUserCredentials(user);
 
         if(isVerified){
-            const token = jwt.sign({ email }, process.env.SECRET_KEY as Secret, {expiresIn: "1m"});
+            const token = jwt.sign({ email }, process.env.SECRET_KEY as Secret, {expiresIn: "10m"});
             const refreshToken = jwt.sign({ email }, process.env.REFRESH_TOKEN as Secret, {expiresIn: "7d"});
             res.json({accessToken : token, refreshToken : refreshToken});
         }else{

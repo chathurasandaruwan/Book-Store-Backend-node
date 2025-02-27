@@ -6,15 +6,17 @@ import OrderRoute from "./routes/OrderRoute";
 import PaymentRoute from "./routes/payment/PaymentRoute";
 import WebhookRoute from "./routes/payment/WebhookRoute";
 import bodyParser from "body-parser";
+import AuthRoute, {authenticateToken} from "./routes/AuthRoute";
 
 dotenv.config();
 
 const port = process.env.PORT || 3000
 const app = express()
+
+//link webhook route
 app.use("/api/webhooks", bodyParser.raw({ type: "application/json" }), WebhookRoute);
 
 
-// app.use(express.json())
 app.use(express.json({ limit: "50mb" })); // Increase limit to 50MB
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
 app.use('/',(req,res,next)=>{
@@ -23,6 +25,15 @@ app.use('/',(req,res,next)=>{
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, content-type');
     next();
 });
+
+console.log("Loaded SECRET_KEY:", process.env.SECRET_KEY);
+
+app.use('/auth', AuthRoute);
+
+app.use(authenticateToken);
+
+
+
 app.use('/book',BookRoute);
 app.use('/user',UserRoute);
 app.use('/order',OrderRoute);
