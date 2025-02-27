@@ -7,6 +7,7 @@ import PaymentRoute from "./routes/payment/PaymentRoute";
 import WebhookRoute from "./routes/payment/WebhookRoute";
 import bodyParser from "body-parser";
 import AuthRoute, {authenticateToken} from "./routes/AuthRoute";
+import cors from "cors";
 
 dotenv.config();
 
@@ -19,15 +20,16 @@ app.use("/api/webhooks", bodyParser.raw({ type: "application/json" }), WebhookRo
 
 app.use(express.json({ limit: "50mb" })); // Increase limit to 50MB
 app.use(express.urlencoded({ limit: "50mb", extended: true }));
-app.use('/',(req,res,next)=>{
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Methods", "GET,PUT,POST,DELETE");
-    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, content-type');
-    next();
-});
+app.use(cors({
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true
+}));
 
 app.use('/auth', AuthRoute);
 app.use('/book',BookRoute);
+app.use("/api/payments", PaymentRoute);
 
 app.use(authenticateToken);
 

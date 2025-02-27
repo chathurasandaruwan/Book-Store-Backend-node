@@ -2,7 +2,7 @@ import jwt, {Secret} from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import express from "express";
 import {User} from "../interface/User";
-import {signUp, userExist, verifyUserCredentials} from "../controller/AuthController";
+import {signUp, userExist, userGetByEmail, verifyUserCredentials} from "../controller/AuthController";
 
 dotenv.config();
 
@@ -17,13 +17,13 @@ router.post("/login", async (req, res) => {
 
     try{
         const isVerified =  await verifyUserCredentials(user);
-
+        const userDetail = await userGetByEmail(email);
         if(isVerified){
             const token = jwt.sign({ email }, process.env.SECRET_KEY as Secret, {expiresIn: "1d"});
             const refreshToken = jwt.sign({ email }, process.env.REFRESH_TOKEN as Secret, {expiresIn: "7d"});
-            res.json({accessToken : token, refreshToken : refreshToken});
+            res.json({accessToken : token, refreshToken : refreshToken,user : userDetail});
         }else{
-            res.sendStatus(403).send('Invalid credentials')
+            res.sendStatus(403).json({message: 'Invalid credentials or your account is blocked by admin'});
         }
     }catch(err){
         console.log(err);
@@ -34,8 +34,9 @@ router.post("/login", async (req, res) => {
 
 router.post("/register", async (req, res) => {
     console.log('Register', req.body);
-    const user : User = req.body;
+    const user : User = req.body.user;
     const email = user.email;
+    console.log('register page',user)
 
     try{
         // check exists
@@ -54,7 +55,7 @@ router.post("/register", async (req, res) => {
         }else {
             // generate token
             const token = jwt.sign({ email }, process.env.SECRET_KEY as Secret, {expiresIn: "1d"});
-            res.json({accessToken : token});
+            res.json({accessToken : token, user : registration});
         }
     }catch(err){
         console.log(err);
@@ -89,7 +90,7 @@ export function authenticateToken(req : express.Request, res : express.Response,
         req.body.email = payload.email;
         next();
     }catch(err){
-        res.status(401).send(err);
+        res.status(401).json(err);
     }
 }
 

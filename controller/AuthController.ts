@@ -28,6 +28,9 @@ export async function verifyUserCredentials(verifyUser: {email: string, password
     if (!user) {
         return false;
     }
+    if (user.status !== "active") {
+        return false;
+    }
 
     return await bcrypt.compare(verifyUser.password, user.password);
 }
@@ -70,6 +73,20 @@ export async function generateUserId(){
         }
 
         return newId;
+    }catch(err) {
+        console.log("error get User", err);
+    }
+}
+//get user by email
+export async function userGetByEmail(email:string){
+    try{
+        const getUser  = await prisma.user.findUnique({
+            where:{
+                email:email
+            }
+        })
+        console.log('User get :',getUser)
+        return getUser;
     }catch(err) {
         console.log("error get User", err);
     }
