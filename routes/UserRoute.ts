@@ -1,10 +1,10 @@
 import express from "express";
 import {User} from "../interface/User";
-import {userAdd, userDelete, userExist, userGetAll, userIdExist, userUpdate} from "../controller/UserController";
+import {userDelete, userGetAll, userIdExist, userUpdate} from "../controller/UserController";
 
 const router = express.Router();
 
-router.post('/add', async (req, res) => {
+/*router.post('/add', async (req, res) => {
     const user: User = req.body
     try {
         // check exists
@@ -22,7 +22,7 @@ router.post('/add', async (req, res) => {
             message: "error adding user",
         });
     }
-});
+});*/
 router.get('/all', async (req, res) => {
     try {
         // get

@@ -2,7 +2,7 @@ import jwt, {Secret} from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import express from "express";
 import {User} from "../interface/User";
-import {signUp, verifyUserCredentials} from "../controller/AuthController";
+import {signUp, userExist, verifyUserCredentials} from "../controller/AuthController";
 
 dotenv.config();
 
@@ -37,6 +37,13 @@ router.post("/register", async (req, res) => {
     const user : User = req.body.user;
 
     try{
+        // check exists
+        const exists = await userExist(user.email);
+        if(exists){
+            res.status(400).send("User email already exists !!!");
+            return;
+        }
+        // save auther
         const registration = await signUp(user);
         res.status(201).json(registration);
     }catch(err){

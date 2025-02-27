@@ -30,14 +30,12 @@ export async function verifyUserCredentials(verifyUser: {email: string, password
 
     return await bcrypt.compare(verifyUser.password, user.password);
 }
-
-
-//check user id exist
-export async function userIdExist(id:string){
+//check user email exist
+export async function userExist(email:string){
     try{
         const getUser  = await prisma.user.findUnique({
             where:{
-                id:id
+                email:email
             }
         })
         console.log('User get :',getUser)
@@ -46,6 +44,7 @@ export async function userIdExist(id:string){
         console.log("error get User", err);
     }
 }
+
 //find last user
 export async function userLast(){
     try{

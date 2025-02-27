@@ -72,21 +72,6 @@ export async function userGetAll(){
         console.log("error get User", err);
     }
 }
-//check user email exist
-export async function userExist(email:string){
-    try{
-        const getUser  = await prisma.user.findUnique({
-            where:{
-                email:email
-            }
-        })
-        console.log('User get :',getUser)
-        return !!getUser;
-    }catch(err) {
-        console.log("error get User", err);
-    }
-}
-/*
 //check user id exist
 export async function userIdExist(id:string){
     try{
@@ -101,6 +86,8 @@ export async function userIdExist(id:string){
         console.log("error get User", err);
     }
 }
+
+/*
 //find last user
 export async function userLast(){
     try{
